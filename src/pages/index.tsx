@@ -1,14 +1,17 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [password, setPassword] = useState("");
 
-  function handleSubmint(event: FormEvent) {
+  const { signIn } = useContext(AuthContext);
+
+  async function handleSubmint(event: FormEvent) {
     event.preventDefault();
 
-    console.log({ email, pass });
+    await signIn({ email, password });
   }
 
   return (
@@ -18,14 +21,14 @@ export default function Home() {
         type="text"
         name="email"
         value={email}
-        onChange={e => setEmail(e.target.value)}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <label htmlFor="password">Password</label>
       <input
         type="text"
         name="password"
-        value={pass}
-        onChange={e => setPass(e.target.value)}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">Entrar</button>
     </form>

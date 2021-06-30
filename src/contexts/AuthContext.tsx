@@ -1,4 +1,11 @@
-import { createContext, ReactNode } from "react";
+import { createContext, ReactNode, useState } from "react";
+import { api } from "../services/api";
+
+type User = {
+  email: string;
+  permissions: string[];
+  roles: string[];
+};
 
 type SignInCredentials = {
   email: string;
@@ -14,13 +21,28 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
-const AuthContext = createContext({} as AuthContextData);
+export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const [user, setUser] = useState<User>();
   const isAuthenticated = false;
 
   async function signIn({ email, password }: SignInCredentials) {
-    console.log({ where: "AuthContext", email, password });
+    try {
+      const response = await api.post("sessions", {
+        email,
+        password,
+      });
+
+      setUser({
+        email,
+        permissions: response.data?.permissions,
+        roles: response.data?.roles,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
