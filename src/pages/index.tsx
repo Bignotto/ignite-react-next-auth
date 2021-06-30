@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ export default function Home() {
   }
 
   return (
-    <form onSubmit={handleSubmint}>
+    <form onSubmit={handleSubmint} className={styles.container}>
       <label htmlFor="email">E-Mail</label>
       <input
         type="text"
